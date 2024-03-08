@@ -1,2 +1,2 @@
 # Learning
-Name explains everything .......except my name XD .
+Everything i am trying to learn.

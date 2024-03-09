@@ -1,14 +1,22 @@
-const people = [
-{ firstName: 'John', age: 32, gender: 'Male' },
-  { firstName: 'Jane', age: 25, gender: 'Female' },
-  { firstName: 'Bob', age: 40, gender: 'Male' },
-  { firstName: 'Alice', age: 18, gender: 'Female' },
-  { firstName: "Eve", age: 35, gender: 'Female' }
-];
+//map datastructure
+//key can be any type
 
-const users = people.map(
-    (user)=>{
-        return user.firstName;
-    }
-)
-console.log(users);
+const map = new Map();
+map.set('firstname:','royal');
+map.set(1,"sanmita");
+console.log(map);
+//calling keys 
+console.log(map.keys());
+console.log(map);
+map.set([1,2,3],"array");
+console.log(map);
+
+for(let key of map){
+    console.log(key);
+    console.log(Array.isArray(key));
+}
+
+for(let [key,value] of map){
+    console.log(value);
+}//destructured
+

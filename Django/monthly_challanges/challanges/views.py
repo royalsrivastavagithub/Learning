@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.urls import reverse
-from django.http import HttpResponse, HttpResponseNotFound , HttpResponseRedirect
+from django.template.loader import render_to_string
+from django.http import Http404, HttpResponseNotFound, HttpResponseRedirect
 # Create your views here.
 
-monthly_challanges_dict = {
+monthly_challanges = {
     'january': 'Eat no meat for this month',
     'february': 'Exercise for 30 minutes each day',
     'march': 'Learn Django for at least 1 hour each day',
@@ -15,30 +16,30 @@ monthly_challanges_dict = {
     'september': 'Donate 1 dollar to a charity',
     'october': 'Say thank you to someone you appreciate',
     'november': 'Write 3 thank you letters to someone you appreciate',
-    'december': 'Eat one piece of fruit for breakfast',
+    'december': None,
 }
 
-def index( request ):
-    list_items = ''
-    months = list(monthly_challanges_dict.keys())
-    for month in months:
-        capitalized_month = month.capitalize()
-        month_path = reverse('month-challange', args=[month])
-        list_items += f'<li><a href="{month_path}">{capitalized_month}</a></li>'
-    response_data = f'<ul>{list_items}</ul>'
-    return HttpResponse(response_data)
+
+def index(request):
+    months = list(monthly_challanges.keys())
+    return render(request, 'challanges/index.html', {
+        'months': months
+    })
+
 
 def monthly_challange_by_number(request, month):
-    months = list(monthly_challanges_dict.keys())
+    months = list(monthly_challanges.keys())
     if month > len(months):
         return HttpResponseNotFound('<h1>Invalid Month</h1>')
     forwarded_month = months[month-1]
     redirect_path = reverse('month-challange', args=[forwarded_month])
     return HttpResponseRedirect(redirect_path)
 
-def monthly_challanges(request, month):
-    challange_text = monthly_challanges_dict.get(month)
-    if challange_text is None:
-        return HttpResponseNotFound('<h1>Not Found</h1>')
-    return HttpResponse(f'<h1>{challange_text}</h1>')
 
+def monthly_challange(request, month):
+    try:
+        challenge_text = monthly_challanges[month]
+        return render(request, 'challanges/challange.html', {
+            'text': challenge_text, 'month': month})
+    except:
+        raise Http404()

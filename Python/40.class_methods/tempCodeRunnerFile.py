@@ -1,0 +1,1 @@
+print(f"Total gpa: {Student.gpa}")
